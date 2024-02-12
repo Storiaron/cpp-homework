@@ -10,29 +10,32 @@
 #include "Cell.h"
 class Configuration{
  public:
-  void setEmitterPoint(std::unique_ptr<Cell> point);
-  void setStartingPoint(std::unique_ptr<Cell> point);
-  void addTargetPoint(std::unique_ptr<Cell> point);
-  void setCellSize(int size);
+  void setEmitterPoint(std::shared_ptr<Cell> point);
+  void setStartingPoint(std::shared_ptr<Cell> point);
+  void addTargetPoint(std::shared_ptr<Cell> point);
+  void setCellSize(double size);
   void setPictureHeight(int size);
   void setPictureWidth(int size);
   void setupSimulationSpace();
+  const std::vector<std::shared_ptr<Cell>>& getTargetPoints() { return targetPoints;}
+  const std::shared_ptr<Cell>& getEmitterPoint() { return emitterPoint;}
+  double getCellSize() { return cellSize;}
   int getXMax() { return xMax;}
   int getYMax() {return yMax;}
   int getXMin() { return xMin;}
   int getYMin() {return yMin;}
  private:
-  int cellSize;
+  double cellSize;
   int pictureWidth;
   int pictureHeight;
   int xMax{0};
   int xMin{0};
   int yMax{0};
   int yMin{0};
-  std::vector<std::vector<std::unique_ptr<Cell>>> simulationSpace;
-  std::unique_ptr<Cell> emitterPoint;
-  std::vector<std::unique_ptr<Cell>> targetPoints;
-  std::unique_ptr<Cell> startingPoint;
+  std::vector<std::vector<std::shared_ptr<Cell>>> simulationSpace;
+  std::shared_ptr<Cell> emitterPoint;
+  std::vector<std::shared_ptr<Cell>> targetPoints;
+  std::shared_ptr<Cell> startingPoint;
   void setXMinMax(int candidateX);
   void setYMinMax(int candidateY);
 };

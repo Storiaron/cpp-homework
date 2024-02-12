@@ -3,9 +3,13 @@
 //
 
 #include <iostream>
+#include <valarray>
 #include "Simulator.h"
 void Simulator::run() {
   setupConfiguration();
+  for(const auto& targetPoint : configuration.getTargetPoints()) {
+    calculateAndLogResult(targetPoint);
+  }
 }
 void Simulator::setupConfiguration() {
   getCellSize();
@@ -77,10 +81,10 @@ void Simulator::createStartingPoint() {
   configuration.setStartingPoint(std::move(startingPoint));
 }
 void Simulator::getCellSize() {
-  int cellSize = 0;
-  std::cout << "Please enter an integer as the size of a cell (pixel)" << std::endl;
-  while(!(std::cin >> cellSize)) {
-    std::cout << "Please enter a valid integer" << std::endl;
+  double cellSize = 0;
+  std::cout << "Please enter the size of a cell (pixel)" << std::endl;
+  while(!(std::cin >> cellSize) && cellSize < 0) {
+    std::cout << "Please enter a valid, positive number" << std::endl;
     std::cin.clear();
     std::cin.ignore(1000,'\n');
   }
@@ -103,4 +107,13 @@ void Simulator::createPicture() {
   }
   configuration.setPictureHeight(height);
   configuration.setPictureWidth(width);
+}
+//TODO rename sg to something that makes sense, replace absolute path, euclidean distance may not be needed
+void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint) {
+    double distanceX = (targetPoint->getX() - configuration.getEmitterPoint()->getX()) * configuration.getCellSize();
+    double distanceY = (targetPoint->getY() - configuration.getEmitterPoint()->getY()) * configuration.getCellSize();
+    double sg = std::pow(distanceX, 2) + std::pow(distanceY, 2);
+    double euclideanDistance = std::sqrt(sg);
+    double directionVectorX = distanceX / sg;
+    double directionVectorY = distanceY / sg;
 }

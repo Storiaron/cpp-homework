@@ -3,17 +3,17 @@
 //
 
 #include "Configuration.h"
-void Configuration::setEmitterPoint(std::unique_ptr<Cell> point) {
+void Configuration::setEmitterPoint(std::shared_ptr<Cell> point) {
   setXMinMax(point->getX());
   setYMinMax(point->getY());
   this->emitterPoint = std::move(point);
 }
-void Configuration::setStartingPoint(std::unique_ptr<Cell> point) {
+void Configuration::setStartingPoint(std::shared_ptr<Cell> point) {
   setXMinMax(point->getX());
   setYMinMax(point->getY());
   this->startingPoint = std::move(point);
 }
-void Configuration::addTargetPoint(std::unique_ptr<Cell> point) {
+void Configuration::addTargetPoint(std::shared_ptr<Cell> point) {
   setXMinMax(point->getX());
   setYMinMax(point->getY());
   this->targetPoints.push_back(std::move(point));
@@ -39,7 +39,7 @@ void Configuration::setupSimulationSpace() {
   simulationSpace.resize(xMax - xMin);
   for(int column = xMin; column < xMax; column++) {
     for(int row = yMin; row < yMax; row++) {
-      simulationSpace.at(column).at(row) = std::make_unique<Cell>(column, row);
+      simulationSpace.at(column).push_back(std::make_shared<Cell>(column, row));
     }
   }
 }

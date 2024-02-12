@@ -10,4 +10,6 @@ add_executable(cpp-homework main.cpp
         Cell.h
         Configuration.cpp
         Configuration.h
+        FileWriter.cpp
+        FileWriter.h
 )
