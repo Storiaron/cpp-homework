@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <valarray>
+#include <set>
+#include <unordered_set>
 #include "Simulator.h"
 void Simulator::run() {
   setupConfiguration();
@@ -17,7 +19,6 @@ void Simulator::setupConfiguration() {
   createTargetPoints();
   createStartingPoint();
   createPicture();
-  configuration.setupSimulationSpace();
 }
 void Simulator::createEmitterPoint() {
   int emitterPointX = 0;
@@ -94,13 +95,13 @@ void Simulator::createPicture() {
   int width = 0;
   int height = 0;
   std::cout << "How many cell should the picture width be" << std::endl;
-  while(!(std::cin >> width) && width > 0) {
+  while(!(std::cin >> width) || width < 0) {
     std::cout << "Please enter a valid integer" << std::endl;
     std::cin.clear();
     std::cin.ignore(1000,'\n');
   }
   std::cout << "How many cell should the picture height be" << std::endl;
-  while(!(std::cin >> height) && height > 0) {
+  while(!(std::cin >> height) || height < 0) {
     std::cout << "Please enter a valid integer" << std::endl;
     std::cin.clear();
     std::cin.ignore(1000,'\n');
@@ -110,10 +111,43 @@ void Simulator::createPicture() {
 }
 //TODO rename sg to something that makes sense, replace absolute path, euclidean distance may not be needed
 void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint) {
-    double distanceX = (targetPoint->getX() - configuration.getEmitterPoint()->getX()) * configuration.getCellSize();
-    double distanceY = (targetPoint->getY() - configuration.getEmitterPoint()->getY()) * configuration.getCellSize();
-    double sg = std::pow(distanceX, 2) + std::pow(distanceY, 2);
-    double euclideanDistance = std::sqrt(sg);
-    double directionVectorX = distanceX / sg;
-    double directionVectorY = distanceY / sg;
+  std::unordered_set<std::string> visitedCells;
+  double directionVectorX = 0, directionVectorY = 0;
+  calculateDirectionVector(directionVectorX, directionVectorY, targetPoint);
+  double distanceResult = 0;
+  double startingPointX = configuration.getEmitterPoint()->getX();
+  double startingPointY = configuration.getEmitterPoint()->getY();
+  double startingPointXCopy = startingPointX;
+  double startingPointYCopy = startingPointY;
+  const static double EPSILON = 0.1;
+  determineDirectionVectorSigns(directionVectorX, directionVectorY, targetPoint);
+  bool isInPicture = false;
+  while(startingPointXCopy - targetPoint->getX() < EPSILON && startingPointYCopy - targetPoint->getY() < EPSILON) {
+    startingPointXCopy += directionVectorX;
+    startingPointYCopy += directionVectorY;
+    if(isInPicture) {
+      distanceResult += std::sqrt(std::pow(directionVectorX, 2) + std::pow(directionVectorY, 2));
+      visitedCells.insert(" x: " + std::to_string((int)std::floor(startingPointXCopy)) +
+          " y: " + std::to_string((int)std::floor(startingPointYCopy)));
+    }
+    isInPicture = configuration.isInPicture(startingPointXCopy, startingPointYCopy);
+  }
+  fileWriter.logResult("distance in picture: " + std::to_string(distanceResult), visitedCells, "../output/output.txt");
+}
+void Simulator::determineDirectionVectorSigns(double& directionVectorX, double& directionVectorY,
+                                              const std::shared_ptr<Cell>& targetPoint) {
+  if(configuration.getEmitterPoint()->getX() > targetPoint->getX()) {
+    directionVectorX = directionVectorX * -1;
+  }
+  if(configuration.getEmitterPoint()->getY() > targetPoint->getY()) {
+    directionVectorY = directionVectorY * -1;
+  }
+}
+void Simulator::calculateDirectionVector(double& directionVectorX, double& directionVectorY,
+                                const std::shared_ptr<Cell>& targetPoint) {
+  double distanceX = (targetPoint->getX() - configuration.getEmitterPoint()->getX()) * configuration.getCellSize();
+  double distanceY = (targetPoint->getY() - configuration.getEmitterPoint()->getY()) * configuration.getCellSize();
+  double sg = std::pow(distanceX, 2) + std::pow(distanceY, 2);
+  directionVectorX = distanceX / sg;
+  directionVectorY = distanceY / sg;
 }

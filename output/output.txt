@@ -1,8 +1,1 @@
-0.010000
-0.010000
-3.605551
-0.153846
-0.230769
-7.071068
-0.100000
-0.100000
+distance in picture: 0.000000. Visited cells: distance in picture: 10.100000. Visited cells:  x: 10 y: 0 x: 9 y: 0 x: 7 y: 0 x: 6 y: 0 x: 4 y: 0 x: 8 y: 0 x: 3 y: 0 x: 2 y: 0 x: 5 y: 0 x: 1 y: 0 x: 0 y: 0

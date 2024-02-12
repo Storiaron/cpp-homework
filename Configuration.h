@@ -16,27 +16,17 @@ class Configuration{
   void setCellSize(double size);
   void setPictureHeight(int size);
   void setPictureWidth(int size);
-  void setupSimulationSpace();
+  bool isInPicture(double x, double y);
   const std::vector<std::shared_ptr<Cell>>& getTargetPoints() { return targetPoints;}
   const std::shared_ptr<Cell>& getEmitterPoint() { return emitterPoint;}
   double getCellSize() { return cellSize;}
-  int getXMax() { return xMax;}
-  int getYMax() {return yMax;}
-  int getXMin() { return xMin;}
-  int getYMin() {return yMin;}
  private:
   double cellSize;
   int pictureWidth;
   int pictureHeight;
-  int xMax{0};
-  int xMin{0};
-  int yMax{0};
-  int yMin{0};
   std::vector<std::vector<std::shared_ptr<Cell>>> simulationSpace;
   std::shared_ptr<Cell> emitterPoint;
   std::vector<std::shared_ptr<Cell>> targetPoints;
   std::shared_ptr<Cell> startingPoint;
-  void setXMinMax(int candidateX);
-  void setYMinMax(int candidateY);
 };
 #endif //CPP_HOMEWORK__CONFIGURATION_H_
