@@ -10,6 +10,22 @@ class Cell {
   Cell(int x, int y) : x(x), y(y) {}
   const int& getX()const { return x;}
   const int& getY()const { return y;}
+  bool operator<(const Cell &other) const {
+    if (x < other.x)
+      return true;
+    if (other.x < x)
+      return false;
+    return y < other.y;
+  }
+  bool operator>(const Cell &other) const {
+    return other < *this;
+  }
+  bool operator<=(const Cell &other) const {
+    return !(other < *this);
+  }
+  bool operator>=(const Cell &other) const {
+    return !(*this < other);
+  }
  private:
   const int x;
   const int y;
