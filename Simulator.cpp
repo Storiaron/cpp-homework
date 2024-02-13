@@ -110,7 +110,7 @@ void Simulator::createPicture() {
   configuration.setPictureWidth(width);
 }
 void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint) {
-  std::unordered_set<std::unique_ptr<Cell>> visitedCells;
+  std::vector<std::unique_ptr<Cell>> visitedCells;
   double directionVectorX = 0, directionVectorY = 0;
   calculateDirectionVector(directionVectorX, directionVectorY, targetPoint);
   double distanceResult = 0;
@@ -128,7 +128,15 @@ void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint) 
     isInPicture = configuration.isInPicture(currentPointX, currentPointY);
     if(isInPicture) {
       distanceResult += std::sqrt(std::pow(directionVectorX, 2) + std::pow(directionVectorY, 2));
-      visitedCells.insert(std::make_unique<Cell>(std::floor(currentPointX), std::floor(currentPointY)));
+      std::unique_ptr<Cell> visitedCell = std::make_unique<Cell>(std::floor(currentPointX), std::floor(currentPointY));
+      auto duplicate = std::find_if(visitedCells.begin(), visitedCells.end(),
+                                  [&visitedCell](const std::unique_ptr<Cell>& ptr) {
+                                    return *ptr == *visitedCell;
+                                  });
+
+      if (duplicate == visitedCells.end()) {
+        visitedCells.push_back(std::move(visitedCell));
+      }
     }
   }
   fileWriter.logResult("Distance in picture: " + std::to_string(distanceResult), visitedCells, "../output/output.txt");
