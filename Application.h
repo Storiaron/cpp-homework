@@ -14,6 +14,7 @@ class Application {
   int getUserInputNonNegativeInt(std::string userPrompt);
   double getUserInputNonNegativeDouble(std::string userPrompt);
   bool getUserInputBoolean(std::string userPrompt);
+  std::string getUserInputString(std::string usePrompt);
 };
 
 #endif //CPP_HOMEWORK__APPLICATION_H_

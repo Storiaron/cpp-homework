@@ -7,6 +7,7 @@
 #include "Application.h"
 #include "simulation_library/Simulator.h"
 void Application::run() {
+  Simulator simulator;
   double cellSize = getUserInputNonNegativeDouble("Enter the size of a cell");
   int pictureStartingPointX = getUserInputInt("Enter the x coordinate of picture starting point (S)");
   int pictureStartingPointY = getUserInputInt("Enter the y coordinate of picture starting point (S)");
@@ -24,10 +25,16 @@ void Application::run() {
     targetPoints.push_back({targetPointX, targetPointY});
     targetPointCounter++;
   }
-  Simulator simulator;
-  simulator.run(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,
-                pictureStartingPointY, pictureWidth, pictureHeight, targetPoints);
-
+  std::string outPutFilePath;
+  if(getUserInputBoolean("Do you wish to set a custom output path?")) {
+    outPutFilePath = getUserInputString("Enter the filepath");
+    simulator.run(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,
+                  pictureStartingPointY, pictureWidth, pictureHeight, targetPoints, outPutFilePath);
+  }
+  else {
+    simulator.run(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,
+                  pictureStartingPointY, pictureWidth, pictureHeight, targetPoints);
+  }
 }
 int Application::getUserInputInt(std::string userPrompt) {
   int input;
@@ -68,4 +75,14 @@ bool Application::getUserInputBoolean(std::string userPrompt) {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
   return input == "Y" || input == "y";
+}
+std::string Application::getUserInputString(std::string userPrompt) {
+  std::string input;
+  std::cout << userPrompt << std::endl;
+  while(!(std::cin >> input)) {
+    std::cout << "Enter a valid string" << std::endl;
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  }
+  return input;
 }
