@@ -16,7 +16,7 @@ void Application::run() {
   int emitterPointY = getUserInputInt("Enter the y coordinate of the emitter point (F)");
   std::vector<std::pair<int, int>> targetPoints;
   static int targetPointCounter = 0;
-  while(getUserInputBoolean("Do you wish to add more target points (D)?")) {
+  while(getUserInputBoolean("Do you wish to add more target points (D) (Y|N)?")) {
     int targetPointX = getUserInputInt("Enter the x coordinate of target point (D" +
         std::to_string(targetPointCounter) + ")");
     int targetPointY = getUserInputInt("Enter the y coordinate of target point (D" +
@@ -61,7 +61,7 @@ double Application::getUserInputNonNegativeDouble(std::string userPrompt) {
 bool Application::getUserInputBoolean(std::string userPrompt) {
   std::string input;
   std::cout << userPrompt << std::endl;
-  while(!(std::cin >> input) || input != "Y" || input != "y" || input != "N" || input != "n") {
+  while(!(std::cin >> input) ||(input != "Y" && input != "y" && input != "N" && input != "n")) {
     std::cout << "Enter Y/y for yes or N/n for no" << std::endl;
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
