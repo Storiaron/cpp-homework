@@ -7,7 +7,7 @@
 #include "Simulator.h"
 void Simulator::run(double cellSize, int emitterPointX, int emitterPointY, int pictureStartingPointX,
                     int pictureStartingPointY, int pictureWidth, int pictureHeight,
-                    std::vector<std::pair<int, int>> targetPointCoordinates, const std::string& filePath = "../output/output.txt") {
+                    std::vector<std::pair<int, int>> targetPointCoordinates, const std::string& filePath) {
   setupConfiguration(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,
                      pictureStartingPointY, pictureWidth, pictureHeight, targetPointCoordinates);
   for(const auto& targetPoint : configuration.getTargetPoints()) {
@@ -29,6 +29,7 @@ void Simulator::setupConfiguration(double cellSize, int emitterPointX, int emitt
   configuration.setTargetPoints(targetPoints);
 }
 void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, const std::string& filePath) {
+  const static double EPSILON = 0.001;
   std::vector<std::unique_ptr<Cell>> visitedCells;
   double directionVectorX = 0, directionVectorY = 0;
   calculateDirectionVector(directionVectorX, directionVectorY, targetPoint);
@@ -37,8 +38,6 @@ void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, 
   double startingPointY = configuration.getEmitterPoint()->getY();
   double currentPointX = startingPointX;
   double currentPointY = startingPointY;
-  const static double EPSILON = 0.001;
-  determineDirectionVectorSigns(directionVectorX, directionVectorY, targetPoint);
   bool isInPicture;
   while(std::sqrt(std::pow(currentPointX - targetPoint->getX(), 2) +
       std::pow(currentPointY - targetPoint->getY(), 2)) > EPSILON) {
@@ -59,15 +58,6 @@ void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, 
     }
   }
   fileWriter.logResult("Distance in picture: " + std::to_string(distanceResult), visitedCells, filePath);
-}
-void Simulator::determineDirectionVectorSigns(double& directionVectorX, double& directionVectorY,
-                                              const std::shared_ptr<Cell>& targetPoint) {
-  if(configuration.getEmitterPoint()->getX() > targetPoint->getX()) {
-    directionVectorX = directionVectorX * -1;
-  }
-  if(configuration.getEmitterPoint()->getY() > targetPoint->getY()) {
-    directionVectorY = directionVectorY * -1;
-  }
 }
 void Simulator::calculateDirectionVector(double& directionVectorX, double& directionVectorY,
                                 const std::shared_ptr<Cell>& targetPoint) {
