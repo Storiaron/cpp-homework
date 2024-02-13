@@ -1,7 +1,7 @@
 # cpp-homework
 ## Table of Contents
 - [Task](#task)
-- [How to Use](#how_to_Use)
+- [How to Use](#how_to_use)
 
 ## Task
 Given an image consisting of MxN pixels. The top-left coordinate of the image is the starting point in space (S). Each pixel is square-shaped with side length a.
@@ -12,7 +12,7 @@ Create a C++ library that calculates the coordinates of the pixels intersected b
 The system's geometry (M, N, a, S) can be entered from the console window, followed by any point F and D.
 During the work, only use the C++ STL library.
 
-## How to Use
+## How to Use <a name="how_to_use"></a>
 1. Start the project.
 2. Enter the necessary information for the simulation to be run.
 3. (Optional)Add a custom filepath for the output to be written to. The default is the output.txt file in the output folder.
