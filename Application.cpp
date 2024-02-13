@@ -22,6 +22,7 @@ void Application::run() {
     int targetPointY = getUserInputInt("Enter the y coordinate of target point (D" +
         std::to_string(targetPointCounter) + ")");
     targetPoints.push_back({targetPointX, targetPointY});
+    targetPointCounter++;
   }
   Simulator simulator;
   simulator.run(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,

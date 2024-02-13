@@ -3,6 +3,7 @@
 //
 
 #include <stdexcept>
+#include <iostream>
 #include "Configuration.h"
 void Configuration::setEmitterPoint(std::shared_ptr<Cell> point) {
   this->emitterPoint = std::move(point);
