@@ -12,4 +12,8 @@ add_executable(cpp-homework main.cpp
         Configuration.h
         FileWriter.cpp
         FileWriter.h
+        test/ConfigurationTester.cpp
+        test/ConfigurationTester.h
+        test/SimulatorTester.cpp
+        test/SimulatorTester.h
 )

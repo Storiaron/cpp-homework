@@ -1,8 +1,11 @@
 #include <iostream>
 #include "Simulator.h"
+#include "test/ConfigurationTester.h"
 
 int main() {
-  Simulator simulator;
-  simulator.run();
+  ConfigurationTester configurationTester;
+  configurationTester.run();
+  /*Simulator simulator;
+  simulator.run();*/
   return 0;
 }

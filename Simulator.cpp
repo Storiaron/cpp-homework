@@ -109,7 +109,6 @@ void Simulator::createPicture() {
   configuration.setPictureHeight(height);
   configuration.setPictureWidth(width);
 }
-//TODO rename sg to something that makes sense, replace absolute path, euclidean distance may not be needed
 void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint) {
   std::unordered_set<std::string> visitedCells;
   double directionVectorX = 0, directionVectorY = 0;
@@ -121,18 +120,18 @@ void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint) 
   double startingPointYCopy = startingPointY;
   const static double EPSILON = 0.1;
   determineDirectionVectorSigns(directionVectorX, directionVectorY, targetPoint);
-  bool isInPicture = false;
+  bool isInPicture;
   while(startingPointXCopy - targetPoint->getX() < EPSILON && startingPointYCopy - targetPoint->getY() < EPSILON) {
-    startingPointXCopy += directionVectorX;
-    startingPointYCopy += directionVectorY;
+    isInPicture = configuration.isInPicture(startingPointXCopy, startingPointYCopy);
     if(isInPicture) {
       distanceResult += std::sqrt(std::pow(directionVectorX, 2) + std::pow(directionVectorY, 2));
       visitedCells.insert(" x: " + std::to_string((int)std::floor(startingPointXCopy)) +
           " y: " + std::to_string((int)std::floor(startingPointYCopy)));
     }
-    isInPicture = configuration.isInPicture(startingPointXCopy, startingPointYCopy);
+    startingPointXCopy += directionVectorX;
+    startingPointYCopy += directionVectorY;
   }
-  fileWriter.logResult("distance in picture: " + std::to_string(distanceResult), visitedCells, "../output/output.txt");
+  fileWriter.logResult("Distance in picture: " + std::to_string(distanceResult), visitedCells, "../output/output.txt");
 }
 void Simulator::determineDirectionVectorSigns(double& directionVectorX, double& directionVectorY,
                                               const std::shared_ptr<Cell>& targetPoint) {
@@ -147,7 +146,7 @@ void Simulator::calculateDirectionVector(double& directionVectorX, double& direc
                                 const std::shared_ptr<Cell>& targetPoint) {
   double distanceX = (targetPoint->getX() - configuration.getEmitterPoint()->getX()) * configuration.getCellSize();
   double distanceY = (targetPoint->getY() - configuration.getEmitterPoint()->getY()) * configuration.getCellSize();
-  double sg = std::pow(distanceX, 2) + std::pow(distanceY, 2);
-  directionVectorX = distanceX / sg;
-  directionVectorY = distanceY / sg;
+  double squaredEuclideanDistance = std::pow(distanceX, 2) + std::pow(distanceY, 2);
+  directionVectorX = distanceX / squaredEuclideanDistance;
+  directionVectorY = distanceY / squaredEuclideanDistance;
 }
