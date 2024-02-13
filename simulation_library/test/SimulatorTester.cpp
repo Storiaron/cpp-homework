@@ -3,3 +3,6 @@
 //
 
 #include "SimulatorTester.h"
+void SimulatorTester::run() {
+
+}

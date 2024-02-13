@@ -66,7 +66,7 @@ bool ConfigurationTester::invalidInputSmallTest() {
 bool ConfigurationTester::isInPictureTest(int startingPointX, int startingPointY,
                                                   int width, int height, double pointX, double pointY) {
   Configuration configuration;
-  configuration.setStartingPoint(std::make_shared<Cell>(startingPointX, startingPointY));
+  configuration.setPictureStartingPoint(std::make_shared<Cell>(startingPointX, startingPointY));
   configuration.setPictureWidth(width);
   configuration.setPictureHeight(height);
   return configuration.isInPicture(pointX, pointY);

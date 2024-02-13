@@ -11,8 +11,8 @@
 class Configuration{
  public:
   void setEmitterPoint(std::shared_ptr<Cell> point);
-  void setStartingPoint(std::shared_ptr<Cell> point);
-  void addTargetPoint(std::shared_ptr<Cell> point);
+  void setPictureStartingPoint(std::shared_ptr<Cell> point);
+  void setTargetPoints(std::vector<std::shared_ptr<Cell>> point);
   void setCellSize(double size);
   void setPictureHeight(int size);
   void setPictureWidth(int size);
@@ -27,6 +27,6 @@ class Configuration{
   std::vector<std::vector<std::shared_ptr<Cell>>> simulationSpace;
   std::shared_ptr<Cell> emitterPoint;
   std::vector<std::shared_ptr<Cell>> targetPoints;
-  std::shared_ptr<Cell> startingPoint;
+  std::shared_ptr<Cell> pictureStartingPoint;
 };
 #endif //CPP_HOMEWORK__CONFIGURATION_H_

@@ -7,11 +7,11 @@
 void Configuration::setEmitterPoint(std::shared_ptr<Cell> point) {
   this->emitterPoint = std::move(point);
 }
-void Configuration::setStartingPoint(std::shared_ptr<Cell> point) {
-  this->startingPoint = std::move(point);
+void Configuration::setPictureStartingPoint(std::shared_ptr<Cell> point) {
+  this->pictureStartingPoint = std::move(point);
 }
-void Configuration::addTargetPoint(std::shared_ptr<Cell> point) {
-  this->targetPoints.push_back(std::move(point));
+void Configuration::setTargetPoints(std::vector<std::shared_ptr<Cell>> points) {
+  this->targetPoints = points;
 }
 void Configuration::setCellSize(double size) {
   if(size < 0)throw std::invalid_argument("cell size can't be negative");
@@ -26,6 +26,6 @@ void Configuration::setPictureWidth(int size) {
   this->pictureWidth = size;
 }
 bool Configuration::isInPicture(double x, double y) {
-  return x >= startingPoint->getX() && x <= startingPoint->getX() + pictureWidth &&
-  y <= startingPoint->getY() && y >= startingPoint->getY() - pictureHeight;
+  return x >= pictureStartingPoint->getX() && x <= pictureStartingPoint->getX() + pictureWidth &&
+  y <= pictureStartingPoint->getY() && y >= pictureStartingPoint->getY() - pictureHeight;
 }

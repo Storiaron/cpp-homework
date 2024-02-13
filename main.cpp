@@ -1,11 +1,7 @@
-#include <iostream>
-#include "Simulator.h"
-#include "test/ConfigurationTester.h"
+#include "Application.h"
 
 int main() {
-  ConfigurationTester configurationTester;
-  configurationTester.run();
-  Simulator simulator;
-  simulator.run();
+  Application application;
+  application.run();
   return 0;
 }
