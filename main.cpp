@@ -5,7 +5,7 @@
 int main() {
   ConfigurationTester configurationTester;
   configurationTester.run();
-  /*Simulator simulator;
-  simulator.run();*/
+  Simulator simulator;
+  simulator.run();
   return 0;
 }

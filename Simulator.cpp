@@ -116,20 +116,21 @@ void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint) 
   double distanceResult = 0;
   double startingPointX = configuration.getEmitterPoint()->getX();
   double startingPointY = configuration.getEmitterPoint()->getY();
-  double startingPointXCopy = startingPointX;
-  double startingPointYCopy = startingPointY;
-  const static double EPSILON = 0.1;
+  double currentPointX = startingPointX;
+  double currentPointY = startingPointY;
+  const static double EPSILON = 0.001;
   determineDirectionVectorSigns(directionVectorX, directionVectorY, targetPoint);
   bool isInPicture;
-  while(startingPointXCopy - targetPoint->getX() < EPSILON && startingPointYCopy - targetPoint->getY() < EPSILON) {
-    isInPicture = configuration.isInPicture(startingPointXCopy, startingPointYCopy);
+  while(std::sqrt(std::pow(currentPointX - targetPoint->getX(), 2) +
+      std::pow(currentPointY - targetPoint->getY(), 2)) > EPSILON) {
+    currentPointX += directionVectorX;
+    currentPointY += directionVectorY;
+    isInPicture = configuration.isInPicture(currentPointX, currentPointY);
     if(isInPicture) {
       distanceResult += std::sqrt(std::pow(directionVectorX, 2) + std::pow(directionVectorY, 2));
-      visitedCells.insert(" x: " + std::to_string((int)std::floor(startingPointXCopy)) +
-          " y: " + std::to_string((int)std::floor(startingPointYCopy)));
+      visitedCells.insert(" x: " + std::to_string((int)std::floor(currentPointX)) +
+          " y: " + std::to_string((int)std::floor(currentPointY)));
     }
-    startingPointXCopy += directionVectorX;
-    startingPointYCopy += directionVectorY;
   }
   fileWriter.logResult("Distance in picture: " + std::to_string(distanceResult), visitedCells, "../output/output.txt");
 }
