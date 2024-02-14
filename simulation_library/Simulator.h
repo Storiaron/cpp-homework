@@ -20,7 +20,7 @@ class Simulator {
   void setupConfiguration(double cellSize, int emitterPointX, int emitterPointY, int pictureStartingPointX,
                           int pictureStartingPointY, int pictureWidth, int pictureHeight,
                           std::vector<std::pair<int, int>> targetPointCoordinates);
-  void calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, const std::string& filePath);
+  void calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, int targetPointCounter, const std::string& filePath);
   void calculateDirectionVector(double& directionVectorX, double& directionVectorY, const std::shared_ptr<Cell>& targetPoint);
 };
 

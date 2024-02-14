@@ -10,8 +10,9 @@ void Simulator::run(double cellSize, int emitterPointX, int emitterPointY, int p
                     std::vector<std::pair<int, int>> targetPointCoordinates, const std::string& filePath) {
   setupConfiguration(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,
                      pictureStartingPointY, pictureWidth, pictureHeight, targetPointCoordinates);
-  for(const auto& targetPoint : configuration.getTargetPoints()) {
-    calculateAndLogResult(targetPoint, filePath);
+  for(int i = 0; i < targetPointCoordinates.size(); i++) {
+    calculateAndLogResult(std::make_shared<Cell>(targetPointCoordinates.at(i).first,
+                                                 targetPointCoordinates.at(i).second), i, filePath);
   }
 }
 void Simulator::setupConfiguration(double cellSize, int emitterPointX, int emitterPointY, int pictureStartingPointX,
@@ -28,7 +29,7 @@ void Simulator::setupConfiguration(double cellSize, int emitterPointX, int emitt
   }
   configuration.setTargetPoints(targetPoints);
 }
-void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, const std::string& filePath) {
+void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, int targetPointCounter, const std::string& filePath) {
   const static double EPSILON = 0.001;
   std::vector<std::unique_ptr<Cell>> visitedCells;
   double directionVectorX = 0, directionVectorY = 0;
@@ -41,11 +42,9 @@ void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, 
   bool isInPicture;
   while(std::sqrt(std::pow(currentPointX - targetPoint->getX(), 2) +
       std::pow(currentPointY - targetPoint->getY(), 2)) > EPSILON) {
-    currentPointX += directionVectorX;
-    currentPointY += directionVectorY;
     isInPicture = configuration.isInPicture(currentPointX, currentPointY);
     if(isInPicture) {
-      distanceResult += std::sqrt(std::pow(directionVectorX, 2) + std::pow(directionVectorY, 2));
+      distanceResult += std::sqrt(std::pow(directionVectorX, 2) + std::pow(directionVectorY, 2)) * configuration.getCellSize();
       std::unique_ptr<Cell> visitedCell = std::make_unique<Cell>(std::floor(currentPointX), std::floor(currentPointY));
       auto duplicate = std::find_if(visitedCells.begin(), visitedCells.end(),
                                   [&visitedCell](const std::unique_ptr<Cell>& ptr) {
@@ -56,8 +55,11 @@ void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, 
         visitedCells.push_back(std::move(visitedCell));
       }
     }
+    currentPointX += directionVectorX;
+    currentPointY += directionVectorY;
   }
-  fileWriter.logResult("Distance in picture: " + std::to_string(distanceResult), visitedCells, filePath);
+  fileWriter.logResult("Distance in picture, from F to D" +std::to_string(targetPointCounter) + ": "
+  + std::to_string(distanceResult), visitedCells, filePath);
 }
 void Simulator::calculateDirectionVector(double& directionVectorX, double& directionVectorY,
                                 const std::shared_ptr<Cell>& targetPoint) {
