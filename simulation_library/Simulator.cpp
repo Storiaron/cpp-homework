@@ -58,6 +58,9 @@ void Simulator::calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, 
     currentPointX += directionVectorX;
     currentPointY += directionVectorY;
   }
+  if(configuration.isInPicture(targetPoint->getX(), targetPoint->getY())) {
+    visitedCells.push_back(std::make_unique<Cell>(*targetPoint));
+  }
   fileWriter.logResult("Distance in picture, from F to D" +std::to_string(targetPointCounter) + ": "
   + std::to_string(distanceResult), visitedCells, filePath);
 }

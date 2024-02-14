@@ -8,6 +8,7 @@
 class Cell {
  public:
   Cell(int x, int y) : x(x), y(y) {}
+  Cell(const Cell& other) : x(other.x), y(other.y) {}
   const int& getX()const { return x;}
   const int& getY()const { return y;}
   bool operator== (const Cell& other) {
