@@ -5,13 +5,19 @@ set(SOURCES
         Cell.cpp
         Configuration.cpp
         FileWriter.cpp
+        Calculator.cpp
+        Calculator.h
 )
 set(HEADERS
         Simulator.h
         Cell.h
         Configuration.h
         FileWriter.h
+        Calculator.cpp
+        Calculator.h
 )
-add_library(simulation_library ${SOURCES} ${HEADERS})
+add_library(simulation_library ${SOURCES} ${HEADERS}
+        Calculator.cpp
+        Calculator.h)
 target_include_directories(simulation_library PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(simulation_library)

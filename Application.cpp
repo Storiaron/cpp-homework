@@ -7,8 +7,11 @@
 #include "Application.h"
 #include "simulation_library/Simulator.h"
 #include "UserPrompt.hpp"
+#include "Configuration.h"
+#include "Cell.h"
 void Application::run() {
   Simulator simulator;
+  std::shared_ptr<Configuration> configuration = std::make_unique<Configuration>();
   double cellSize = getUserInputNonNegativeDouble(userPrompts["cellSize"]);
   int pictureStartingPointX = getUserInputInt(userPrompts["pictureStartingPointX"]);
   int pictureStartingPointY = getUserInputInt(userPrompts["pictureStartingPointY"]);
@@ -16,26 +19,28 @@ void Application::run() {
   int pictureHeight = getUserInputNonNegativeInt(userPrompts["pictureHeight"]);
   int emitterPointX = getUserInputInt(userPrompts["emitterPointX"]);
   int emitterPointY = getUserInputInt(userPrompts["emitterPointY"]);
-  std::vector<std::pair<int, int>> targetPoints;
+  std::vector<std::shared_ptr<Cell>> targetPoints;
   static int targetPointCounter = 0;
   while(getUserInputBoolean(userPrompts["additionalTargetPoint"])) {
     int targetPointX = getUserInputInt(userPrompts["targetPointX"] +
         std::to_string(targetPointCounter));
     int targetPointY = getUserInputInt(userPrompts["targetPointY"] +
         std::to_string(targetPointCounter));
-    targetPoints.push_back({targetPointX, targetPointY});
+    targetPoints.push_back(std::make_shared<Cell>(targetPointX, targetPointY));
     targetPointCounter++;
   }
-  std::string outPutFilePath;
   if(getUserInputBoolean(userPrompts["needCustomFilePath"])) {
-    outPutFilePath = getUserInputString(userPrompts["filePath"]);
-    simulator.run(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,
-                  pictureStartingPointY, pictureWidth, pictureHeight, targetPoints, outPutFilePath);
+    configuration->setOutputFilePath(getUserInputString(userPrompts["filePath"]));
   }
-  else {
-    simulator.run(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,
-                  pictureStartingPointY, pictureWidth, pictureHeight, targetPoints);
-  }
+  std::shared_ptr<Cell> pictureStartingPoint = std::make_shared<Cell>(pictureStartingPointX,pictureStartingPointY);
+  std::shared_ptr<Cell> emitterPoint = std::make_shared<Cell>(emitterPointX,emitterPointY);
+  configuration->setTargetPoints(targetPoints);
+  configuration->setCellSize(cellSize);
+  configuration->setPictureWidth(pictureWidth);
+  configuration->setPictureHeight(pictureHeight);
+  configuration->setEmitterPoint(emitterPoint);
+  configuration->setPictureStartingPoint(pictureStartingPoint);
+  simulator.run(std::move(configuration));
 }
 int Application::getUserInputInt(std::string userPrompt) {
   int input;

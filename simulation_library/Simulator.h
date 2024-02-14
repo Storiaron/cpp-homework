@@ -9,19 +9,13 @@
 #include "Cell.h"
 #include "Configuration.h"
 #include "FileWriter.h"
+#include "Calculator.h"
 class Simulator {
  public:
-  void run(double cellSize, int emitterPointX, int emitterPointY, int pictureStartingPointX,
-           int pictureStartingPointY, int pictureWidth, int pictureHeight,
-           std::vector<std::pair<int, int>> targetPointCoordinates, const std::string& filePath = "../output/output.txt");
+  void run(std::shared_ptr<Configuration> config);
  private:
-  Configuration configuration;
-  FileWriter fileWriter;
-  void setupConfiguration(double cellSize, int emitterPointX, int emitterPointY, int pictureStartingPointX,
-                          int pictureStartingPointY, int pictureWidth, int pictureHeight,
-                          std::vector<std::pair<int, int>> targetPointCoordinates);
-  void calculateAndLogResult(const std::shared_ptr<Cell>& targetPoint, int targetPointCounter, const std::string& filePath);
-  void calculateDirectionVector(double& directionVectorX, double& directionVectorY, const std::shared_ptr<Cell>& targetPoint);
+  std::shared_ptr<Configuration> configuration;
+  std::string visitedCellsToString(std::vector<std::unique_ptr<Cell>> visitedCells);
 };
 
 #endif //CPP_HOMEWORK__SIMULATOR_H_

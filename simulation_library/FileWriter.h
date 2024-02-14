@@ -13,7 +13,7 @@
 #include "Cell.h"
 class FileWriter {
  public:
-  void logResult(const std::string& result, const std::vector<std::unique_ptr<Cell>>& visitedCells, const std::string& filePath);
+  void logResult(const std::string& result, const std::string& filePath);
 };
 
 #endif //CPP_HOMEWORK__FILEWRITER_H_
