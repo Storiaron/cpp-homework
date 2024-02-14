@@ -6,28 +6,29 @@
 #include <limits>
 #include "Application.h"
 #include "simulation_library/Simulator.h"
+#include "UserPrompt.hpp"
 void Application::run() {
   Simulator simulator;
-  double cellSize = getUserInputNonNegativeDouble("Enter the size of a cell");
-  int pictureStartingPointX = getUserInputInt("Enter the x coordinate of picture starting point (S)");
-  int pictureStartingPointY = getUserInputInt("Enter the y coordinate of picture starting point (S)");
-  int pictureWidth = getUserInputNonNegativeInt("How many cell width should the picture be");
-  int pictureHeight = getUserInputNonNegativeInt("How many cell tall should the picture be");
-  int emitterPointX = getUserInputInt("Enter the x coordinate of the emitter point (F)");
-  int emitterPointY = getUserInputInt("Enter the y coordinate of the emitter point (F)");
+  double cellSize = getUserInputNonNegativeDouble(userPrompts["cellSize"]);
+  int pictureStartingPointX = getUserInputInt(userPrompts["pictureStartingPointX"]);
+  int pictureStartingPointY = getUserInputInt(userPrompts["pictureStartingPointY"]);
+  int pictureWidth = getUserInputNonNegativeInt(userPrompts["pictureWidth"]);
+  int pictureHeight = getUserInputNonNegativeInt(userPrompts["pictureHeight"]);
+  int emitterPointX = getUserInputInt(userPrompts["emitterPointX"]);
+  int emitterPointY = getUserInputInt(userPrompts["emitterPointY"]);
   std::vector<std::pair<int, int>> targetPoints;
   static int targetPointCounter = 0;
-  while(getUserInputBoolean("Do you wish to add more target points (D) (Y|N)?")) {
-    int targetPointX = getUserInputInt("Enter the x coordinate of target point (D" +
-        std::to_string(targetPointCounter) + ")");
-    int targetPointY = getUserInputInt("Enter the y coordinate of target point (D" +
-        std::to_string(targetPointCounter) + ")");
+  while(getUserInputBoolean(userPrompts["additionalTargetPoint"])) {
+    int targetPointX = getUserInputInt(userPrompts["targetPointX"] +
+        std::to_string(targetPointCounter));
+    int targetPointY = getUserInputInt(userPrompts["targetPointY"] +
+        std::to_string(targetPointCounter));
     targetPoints.push_back({targetPointX, targetPointY});
     targetPointCounter++;
   }
   std::string outPutFilePath;
-  if(getUserInputBoolean("Do you wish to set a custom output path? (Y|N)")) {
-    outPutFilePath = getUserInputString("Enter the filepath");
+  if(getUserInputBoolean(userPrompts["needCustomFilePath"])) {
+    outPutFilePath = getUserInputString(userPrompts["filePath"]);
     simulator.run(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,
                   pictureStartingPointY, pictureWidth, pictureHeight, targetPoints, outPutFilePath);
   }
