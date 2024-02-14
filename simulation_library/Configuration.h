@@ -31,6 +31,6 @@ class Configuration{
   std::shared_ptr<Cell> emitterPoint;
   std::vector<std::shared_ptr<Cell>> targetPoints;
   std::shared_ptr<Cell> pictureStartingPoint;
-  std::string outputFilePath{"../output/output.txt"};
+  std::string outputFilePath{"output.txt"};
 };
 #endif //CPP_HOMEWORK__CONFIGURATION_H_

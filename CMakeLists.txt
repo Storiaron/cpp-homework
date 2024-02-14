@@ -7,6 +7,5 @@ set(SOURCES
         UserPrompt.hpp
 )
 
-add_executable(cpp-homework ${SOURCES}
-        UserPrompt.hpp)
+add_executable(cpp-homework ${SOURCES})
 target_link_libraries(cpp-homework simulation_library)
