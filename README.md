@@ -18,4 +18,4 @@ During the work, only use the C++ STL library.
 3. (Optional)Add a custom filepath for the output to be written to. The default is the output.txt file in the output folder.
 4. The size of a cell can be fractional number, but it can't be negative. Picture width and height represent the number of cells the picture takes up and can only be whole, positive (or zero) numbers.
 5. The target points the rays travel to can be both to the "left" or "right" of the point emitting the ray.
-6. The visited cells logged in the output file are logged in order, and each cell is only logged once per ray. 
+6. The visited cells logged in the output file are logged in order, and each cell is only logged once per ray. The cells the target points are in do not get logged.
