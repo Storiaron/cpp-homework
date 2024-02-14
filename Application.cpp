@@ -26,7 +26,7 @@ void Application::run() {
     targetPointCounter++;
   }
   std::string outPutFilePath;
-  if(getUserInputBoolean("Do you wish to set a custom output path?")) {
+  if(getUserInputBoolean("Do you wish to set a custom output path? (Y|N)")) {
     outPutFilePath = getUserInputString("Enter the filepath");
     simulator.run(cellSize, emitterPointX, emitterPointY, pictureStartingPointX,
                   pictureStartingPointY, pictureWidth, pictureHeight, targetPoints, outPutFilePath);
