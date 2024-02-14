@@ -13,9 +13,9 @@ The system's geometry (M, N, a, S) can be entered from the console window, follo
 During the work, only use the C++ STL library.
 
 ## How to Use <a name="how_to_use"></a>
-1. Start the project.
+1. Start the project. Either download clone the repository or use the latest release. 
 2. Enter the necessary information for the simulation to be run.
-3. (Optional)Add a custom filepath for the output to be written to. The default is the output.txt file in the output folder.
+3. (Optional)Add a custom filepath for the output to be written to. The default is output.txt file.
 4. The size of a cell can be fractional number, but it can't be negative. Picture width and height represent the number of cells the picture takes up and can only be whole, positive (or zero) numbers.
 5. The target points the rays travel to can be both to the "left" or "right" of the point emitting the ray.
-6. The visited cells logged in the output file are logged in order, and each cell is only logged once per ray. The cells the target points are in do not get logged.
+6. The visited cells logged in the output file are logged in order, and each cell is only logged once per ray.
